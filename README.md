@@ -1,0 +1,2 @@
+# hypetrain
+Twitch HypeTrain Calculator
