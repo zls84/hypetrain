@@ -1,0 +1,214 @@
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Twitch HypeTrain</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="tmijs/tmi.min.js"></script>
+    <link rel="stylesheet" href="/hypetrain.css">
+</head>
+<body>
+
+<header>Twitch HypeTrain</header>
+
+<div>
+    <table>
+        <tr>
+            <th style="width: 40pt">Level</th>
+            <th style="width: 40pt">Bits</th>
+            <th style="width: 40pt">Subs</th>
+        </tr>
+        <tr><td>Level 1:</td><td class="center"><label id="level1bits">0</label></td><td class="center"><label id="level1subs">0</label></td></tr>
+        <tr><td>Level 2:</td><td class="center"><label id="level2bits">0</label></td><td class="center"><label id="level2subs">0</label></td></tr>
+        <tr><td>Level 3:</td><td class="center"><label id="level3bits">0</label></td><td class="center"><label id="level3subs">0</label></td></tr>
+        <tr><td>Level 4:</td><td class="center"><label id="level4bits">0</label></td><td class="center"><label id="level4subs">0</label></td></tr>
+        <tr><td>Level 5:</td><td class="center"><label id="level5bits">0</label></td><td class="center"><label id="level5subs">0</label></td></tr>
+    </table>
+</div>
+<br/><br/>
+<div>
+    Csatorna: 
+    <form id="channelForm">
+        <input id="channel" style="width: 100pt"/>
+        <input id="connected" style="width: 25pt" type="checkbox" disabled/>
+    </form>
+</div>
+
+<div class="messages">
+    <textarea id="chat" class="chatmessages" rows="30" draggable="false"></textarea>
+    <textarea id="eventlist" class="chatmessages" rows="15" draggable="false"></textarea>
+    <!--button id="test">TestEvent</button-->
+</div>
+
+<div>
+    <select id="startLevel" style="width: 100pt">
+        <option value="0">Level 1</option>
+        <option value="1">Level 2</option>
+        <option value="2">Level 3</option>
+        <option value="3">Level 4</option>
+        <option value="4">Level 5</option>
+    </select>
+    <input id="startPercent" type="number" value="0" style="width: 100pt">
+    <select id="difficulty" style="width: 100pt">
+        <option value="0">Easy</option>
+        <option value="1" selected="selected">Medium</option>
+        <option value="2">Hard</option>
+        <option value="3">Super Hard</option>
+        <option value="4">Insane</option>
+    </select>
+</div>
+
+<div>
+    <label id="correctionRequiredMin">0</label>..<label id="correctionRequiredMax">0</label> (diff: <label id="correctionRequiredAdd">0</label>)
+</div>
+
+<div>
+    <table>
+        <tr>
+            <th></th>
+            <th>Korrekció</th>
+            <th>Érzékelt</th>
+            <th>Összesen</th>
+        </tr>
+        <tr>
+            <td>Bits</td>
+            <td><input id="t0Correction" type="number" value="0"/></td>
+            <td><label id="t0Detected">0</label></td>
+            <td><label id="t0Sum">0</label></td>
+            </tr>
+        <tr>
+            <td>T1 sub</td>
+            <td><input id="t1Correction" type="number"value="0"/></td>
+            <td><label id="t1Detected">0</label></td>
+            <td><label id="t1Sum">0</label></td>
+        </tr>
+        <tr>
+            <td>T2 sub</td>
+            <td><input id="t2Correction" type="number" value="0"/></td>
+            <td><label id="t2Detected">0</label></td>
+            <td><label id="t2Sum">0</label></td>
+            </tr>
+        <tr>
+            <td>T3 sub</td>
+            <td><input id="t3Correction" type="number" value="0"/></td>
+            <td><label id="t3Detected">0</label></td>
+            <td><label id="t3Sum">0</label></td>
+        </tr>
+        <tr>
+            <td>Pontos</td>
+            <td><input id="precise" type="checkbox"></td>
+            <td colspan="2"><label id="subcount">0</label> sub + <label id="bitcount">0</label> bit</td>
+        </tr>
+    </table>
+</div>
+<br/>
+<div>
+    <table>
+        <tr>
+            <th></th>
+            <th class="precise3" colspan="3">Aktuális</th>
+            <th class="precise3" colspan="3">Hova</th>
+            <th colspan="2">Cél</th>
+        </tr>
+        <tr>
+            <td>Szint</td>
+            <td class="notprecise">
+                <label id="actualLevelMin"></label>
+            </td>
+            <td class="precise">
+                <label id="actualLevel"></label>
+            </td>
+            <td class="notprecise">
+                <label id="actualLevelMax"></label>
+            </td>
+            <td class="notprecise">
+                <label id="addLevelToMin"></label>
+            </td>
+            <td class="precise">
+                <label id="addLevel"></label>
+            </td>
+            <td class="notprecise">
+                <label id="addLevelToMax"></label>
+            </td>
+            <td colspan=2>
+                <select id="targetLevel">
+                    <option value="0">Level 1</option>
+                    <option value="1">Level 2</option>
+                    <option value="2">Level 3</option>
+                    <option value="3">Level 4</option>
+                    <option value="4" selected="selected">Level 5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Százalék</td>
+            <td class="notprecise"><label id="actualPercentMin"></td>
+            <td class="precise"><label id="actualPercent"></td>
+            <td class="notprecise"><label id="actualPercentMax"></td>
+            <td class="notprecise"><label id="addPercentToMin"></label></td>
+            <td class="precise"><label id="addPercent"></label></td>
+            <td class="notprecise"><label id="addPercentToMax"></label></td>
+            <td colspan="2"><input id="targetPercent" type="number" value=100 min="0"/></td>
+        </tr>
+        <tr>
+            <td>Bit érték</td>
+            <td class="notprecise"><label id="actualBitValueMin"></label></td>
+            <td class="precise"><label id="actualBitValue"></label></td>
+            <td class="notprecise"><label id="actualBitValueMax"></label></td>
+            <td class="precise3" colspan="3"><input id="addBitValue" type="number" value=0 min="0"/></td>
+            <td><label id="targetBitValue"></label></td>
+            <td><label id="targetBitValueMax"></label></td>
+        </tr>
+        <tr>
+            <td>Sub érték</td>
+            <td class="notprecise"><label id="actualSubValueMin"></label></td>
+            <td class="precise"><label id="actualSubValue"></label></td>
+            <td class="notprecise"><label id="actualSubValueMax"></label></td>
+            <td class="precise3" colspan="3"><input id="addSubValue" type="number" value=0 min="0"/></td>
+            <td><label id="targetSubValue"></label></td>
+            <td><label id="targetSubValueMax"></label></td>
+        </tr>
+    </table>
+    <br/>
+</div>
+
+<div>
+    A cél eléréséhez szükséges még: 
+    <table>
+        <tr>
+            <th class="wide"></th>
+            <th class="wide">Cél (Min)</th>
+            <th class="wide">Cél (Max)</th>
+        </tr>
+        <tr class="notprecise">
+            <th>Aktuális (Min)</th>
+            <td><label id="reqMinToMin"></label></td>
+            <td><label id="reqMinToMax"></label></td>
+        </tr>
+        <tr class="precise">
+            <th>Aktuális (Precise)</th>
+            <td><label id="reqPrcToMin"></label></td>
+            <td><label id="reqPrcToMax"></label></td>
+        </tr>
+        <tr class="notprecise">
+            <th>Aktuális (Max)</th>
+            <td><label id="reqMaxToMin"></label></td>
+            <td><label id="reqMaxToMax"></label></td>
+        </tr>
+    </table>
+</div>
+
+<br/>
+<div>
+    <div class="info">Az <b>Aktuális</b> oszlopban adható meg, hogy jelenleg milyen szinten és százalékon áll a vonat. Alul látható, hogy ehhez legalább hány bit érték volt szükséges, illetve maximalizálva a subok számát, hány sub+(bit) érték.</div>
+    <div class="info">A <b>Hova</b> oszlop megmondja, hogy a megadott számú bit és sub (T1) felhasználásával hova jut a vonat (szint és százalék).</div>
+    <div class="info">A <b>Cél</b> oszlopban megadhatjuk, hogy milyen szintet és százalékot szeretnénk elérni. Alatta szintén látható, hogy ehhez összesen hány bit érték (ill. sub+(bit)) szükséges. A táblázat alatt pedig, hogy az <b>Aktuális</b> állapotról mennyi szükséges még a kívánt cél eléréséhez.</div>
+    <br/>
+    <div class="info">A fentebbi X+(Y) értékek esetén az X T1 sub (=500 bit) értéket jelent, míg az Y a kiegészítő bitek értékét.</div>
+    <br/>
+    <div class="warning">A chat fölött az összesítőben a T1, T2 és T3 sub 1-1 subnak van figyelembe véve, míg a vonat % esetén 1x, 2x és ?5x? szorzóval van beszámítva.</div>
+</div>
+
+<script src="hypetrain.js"></script>
+
+</body>
+</html>
