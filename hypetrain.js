@@ -386,7 +386,7 @@ function cheer(bits)
 function soundalert(bits, user, sound)
 {
     apply_bits(bits);
-    addEventText(`${user} played ${sound} for ${bits} bits`);
+    addEventText(`${user} played ${sound} for ${bits} bits\n`);
 }
 
 function addEventText(txt)
