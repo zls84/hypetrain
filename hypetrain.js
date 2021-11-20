@@ -456,7 +456,7 @@ function getSoundAlert(message)
     {
         //SoundAlerts: zls84 used 50 Bits to play knock
         user = result[1];
-        bits = parseInt(result[2]);
+        bits = result[2];
         sound = result[3];
     }
     else
@@ -467,18 +467,30 @@ function getSoundAlert(message)
             //SoundAlerts: zls84 ezzel ijeszt halálra: realistic knocking ( 100 Bits )
             user = result[1];
             sound = result[2];
-            bits = parseInt(result[3]);
+            bits = result[3];
         }
         else
         {
-            bits = message.match(/(\d+) Bits/);
-            user = message.match(/(\S*)/);
+            //SoundAlerts: zls84 played knock for 100 Bits
+            result = message.match(/^(\S+) played ([\S\s]*) for (\d+) Bits$/);
+
+            if (result != null)
+            {
+                user = result[1];
+                sound = result[2];
+                bits = result[3];
+            }
+            else
+            {
+                bits = message.match(/(\d+) Bits/)[1];
+                user = message.match(/(\S*)/)[1];
+            }
         }
     }
 
     return {
         user: user,
-        bits: bits,
+        bits: parseInt(bits),
         sound: sound
     };
 }
