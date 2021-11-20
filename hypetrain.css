@@ -1,0 +1,64 @@
+body {
+    background: #333;
+    color: white;
+}
+
+td.center {
+    text-align: center;
+}
+
+.warning {
+    color: red;
+}
+
+table, th, td {
+    border: 1px solid lightgrey;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 2px;
+    width: 60pt;
+}
+
+input, select {
+    background: #444;
+    color: white;
+    width: 100%;
+}
+
+header {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 16pt;
+    color: yellowgreen;
+}
+
+th.wide {
+    width: 100pt;
+}
+
+.precise {
+    background-color: #030;
+    font-weight: 200;
+}
+
+.precise3 {
+}
+
+.notprecise {
+    background-color: #300;
+}
+
+.messages {
+    display:block;
+    float:right;
+    width: 50%;
+}
+
+.chatmessages {
+    width: 100%;
+    resize:none;
+    background-color: #444;
+}
