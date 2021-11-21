@@ -3,7 +3,7 @@
 let corrections = [0, 0, 0, 0];
 let actualState = [0, 0, 0, 0];
 
-const bitsPerSubs = [1, 500, 1000, 1500];
+const bitsPerSubs = [1, 500, 1000, 2500];
 
 const bitsPerLevels = [
     [ 1600,  1800,  2100,  2300,  3000],
